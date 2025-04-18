@@ -45,12 +45,12 @@ def fetch_records(endpoint, set_name, metadata_prefix="pico"):
                     total_records += 1
                     pbar.update(1)
                     found_records = True
-                    """
+                    '''                
                     # Stop fetching if the limit of 30 records is reached
                     if total_records >= 30:
                         print("Reached the limit of 30 records.")
                         return records
-                    """
+                    ''' 
                 if not found_records:
                     break
                 
