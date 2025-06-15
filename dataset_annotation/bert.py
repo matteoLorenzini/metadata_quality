@@ -12,10 +12,11 @@ import torch
 import numpy as np
 import os
 import transformers
+from transformers import EarlyStoppingCallback
 
 # --- Configuration ---
 DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../dataset/CH_IT/active_learning_label/dataset_active_learning.csv'))
-UNLABELED_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../dataset/CH_IT/active_learning_label/unlabelled_batches/unlabelled_batch_2.csv'))
+UNLABELED_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../dataset/CH_IT/active_learning_label/unlabelled_batches/unlabelled_batch_3.csv'))
 ANNOTATION_BATCH_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../dataset/CH_IT/active_learning_label/annotation_batches/annotation_batch_1.csv'))
 LABELLED_WITH_PRED_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../dataset/CH_IT/active_learning_label/labelled_batches/labelled_with_predictions.csv'))
 
@@ -76,24 +77,29 @@ model = AutoModelForSequenceClassification.from_pretrained(
     label2id=label2id,
 )
 
-# --- Training arguments ---
+# --- Training arguments with fine-tuning suggestions ---
 training_args = TrainingArguments(
     output_dir='./results',
-    num_train_epochs=4,
-    per_device_train_batch_size=8,
-    per_device_eval_batch_size=8,
+    num_train_epochs=5,                # Increased epochs for better convergence
+    learning_rate=1e-5,                # Lower learning rate for finer updates
+    per_device_train_batch_size=16,    # Larger batch size (if GPU allows)
+    per_device_eval_batch_size=16,
+    weight_decay=0.01,                 # Regularization to prevent overfitting
     eval_strategy="epoch",
-    save_strategy="no",
+    save_strategy="epoch",                # <-- add this line
     logging_dir='./logs',
     logging_steps=10,
+    load_best_model_at_end=True,              # <-- add this
+    metric_for_best_model="eval_loss",        # <-- and this (or another metric)
 )
 
-# --- Trainer ---
+# --- Trainer with early stopping ---
 trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
     eval_dataset=val_dataset,
+    callbacks=[EarlyStoppingCallback(early_stopping_patience=2)],  # Early stopping if no improvement for 2 evals
 )
 
 trainer.train()
