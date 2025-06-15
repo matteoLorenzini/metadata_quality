@@ -64,4 +64,4 @@ output/
 Thumbs.db
 
 # Custom project folders
-dataset_annotation/iccd_bert_archive_model/
+iccd_bert_active_model/
