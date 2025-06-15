@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.log
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# VSCode
+.vscode/
+.history/
+
+# Environment
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+*.env
+
+# Data & Model artifacts
+*.ckpt
+*.h5
+*.pt
+*.pth
+*.onnx
+*.pb
+*.npz
+*.npy
+*.csv
+*.tsv
+*.xlsx
+*.db
+*.sqlite
+*.sqlite3
+
+# Results, logs, and outputs
+logs/
+logs/*
+*.log
+*.out
+*.tmp
+*.bak
+
+# HuggingFace cache
+.cache/
+datasets_cache/
+results/
+runs/
+output/
+*.mlruns/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Custom project folders
+dataset_annotation/iccd_bert_archive_model
