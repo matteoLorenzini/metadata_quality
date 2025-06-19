@@ -106,7 +106,8 @@ trainer.train()
 
 # --- Save the trained model ---
 trainer.save_model('./iccd_bert_active_model')
-print("Model saved to './iccd_bert_active_model'")
+tokenizer.save_pretrained('./iccd_bert_active_model')
+print("Model and tokenizer saved to './iccd_bert_active_model'")
 
 # --- Training performance on all labeled data ---
 full_dataset = prepare_dataset(df_labeled, labeled=True)
